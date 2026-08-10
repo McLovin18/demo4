@@ -152,7 +152,7 @@ const lastHeroIndex = useMemo(() => {
 
   return (
     <>
-      <main className="min-h-screen w-full" style={{color: "var(--text)" }}>
+      <main className=" w-full" style={{color: "var(--text)" }}>
         {loading ? (
         <div
             className="w-full relative overflow-hidden"

@@ -13,7 +13,6 @@ const IconInstagram = () => (
   </svg>
 );
 
-
 const IconLocation = () => (
   <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
     <path d="M12 2C7.589 2 4 5.589 4 9.995 4 15.991 12 22 12 22s8-6.009 8-12.005C20 5.589 16.411 2 12 2zm0 10.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
@@ -27,12 +26,12 @@ const IconWhatsApp = () => (
 );
 
 const socialLinks = [
-  { href: "https://www.instagram.com/something.bluestudio/", label: "Instagram", Icon: IconInstagram },
+  { href: "https://www.instagram.com/alegria_creativecakes/", label: "Instagram", Icon: IconInstagram },
 ];
 
 // 👉 Información del negocio
-const WHATSAPP_NUMBER = "593997196991"; // solo números, con código de país, sin '+' ni espacios
-const WHATSAPP_DISPLAY = "+593 99 719 6991"; // como se muestra al usuario
+const WHATSAPP_NUMBER = "593999391279"; // solo números, con código de país, sin '+' ni espacios
+const WHATSAPP_DISPLAY = "+593 99 939 1279"; // como se muestra al usuario
 
 const Footer: React.FC = () => {
   const pathname = usePathname();
@@ -80,7 +79,7 @@ const Footer: React.FC = () => {
             {/* Columna 1: Información de la tienda */}
             <div className="flex flex-col items-center md:items-start text-center md:text-left gap-1">
               <span className="text-base font-bold tracking-wide text-white">
-                Something Blue
+                Alegría Creative Cakes
               </span>
 
               {instagramEnabled && instagramFollowers !== null && instagramFollowers > 0 && (
@@ -93,11 +92,11 @@ const Footer: React.FC = () => {
               )}
 
               <div className="text-xs text-white/60 mt-1 max-w-[220px]">
-                <p>Diseño Gráfico · Events & Branding</p>
-                <p>Personalizamos productos para todos tus eventos</p>
+                <p>Tortas temáticas, postres y dulces para eventos</p>
+                <p>Diseños Personalizados • Hecho con Amor</p>
                 <p className="flex items-center gap-1 justify-center md:justify-start mt-0.5">
                   <IconLocation />
-                  Envíos a todo el Ecuador
+                  Ecuador · Envíos a todo lugar
                 </p>
               </div>
             </div>
@@ -117,7 +116,7 @@ const Footer: React.FC = () => {
                     <li key={label}>
                       <a
                         href={href}
-                        className="flex items-center justify-center w-9 h-9 rounded-full border border-white/15 text-white transition-colors hover:bg-[#7B9BC0] hover:border-[#7B9BC0]"
+                        className="flex items-center justify-center w-9 h-9 rounded-full border border-white/15 text-white transition-colors hover:bg-[#E0568F] hover:border-[#E0568F]"
                         target="_blank"
                         rel="noreferrer"
                         title={label}
@@ -143,12 +142,13 @@ const Footer: React.FC = () => {
                 href={`https://wa.me/${WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 text-xl text-white/70 hover:text-[#7B9BC0] transition-colors"
+                className="flex items-center gap-2 text-xl text-white/70 hover:text-[#E0568F] transition-colors"
                 onClick={() => trackLinkClick().catch(console.error)}
               >
                 <span>{WHATSAPP_DISPLAY}</span>
                 <IconWhatsApp />
               </a>
+
             </div>
 
           </div>
@@ -160,11 +160,11 @@ const Footer: React.FC = () => {
         {/* Copyright row */}
         <div className={styles.ftCopyRow}>
           <p className="text-xs text-white/50">
-            © {new Date().getFullYear()} Something Blue. Todos los derechos reservados.
+            © {new Date().getFullYear()} Alegría Creative Cakes. Todos los derechos reservados.
           </p>
           <div className={styles.ftCopyRight}>
             <div className="flex items-center gap-1.5 text-xs text-white/60">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#7B9BC0]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#E0568F]" />
               Hecho en Ecuador
             </div>
 
@@ -172,7 +172,7 @@ const Footer: React.FC = () => {
               href="https://www.instagram.com/hector.cobena/"
               target="_blank"
               rel="noreferrer"
-              className="text-xs text-white/50 hover:text-[#7B9BC0] transition-colors"
+              className="text-xs text-white/50 hover:text-[#E0568F] transition-colors"
               onClick={() => trackLinkClick().catch(console.error)}
             >
               Desarrollado por Héctor Cobeña

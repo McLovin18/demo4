@@ -17,9 +17,9 @@ export const revalidate = 1800;
 // Cambiar cuando tengas el dominio definitivo
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://somethingbluestudio.com";
+  "https://alegriacreativecakes.com";
 
-const SITE_NAME = "Something Blue | Diseño Gráfico, Eventos y Branding Ecuador";
+const SITE_NAME = "Alegría Creative Cakes | Tortas Temáticas y Postres en Ecuador";
 
 const sourceSerif4 = Source_Serif_4({
   subsets: ["latin"],
@@ -30,26 +30,26 @@ const sourceSerif4 = Source_Serif_4({
 
 export const metadata: Metadata = {
   title: {
-    default: "Something Blue | Diseño Gráfico, Eventos y Branding en Ecuador",
-    template: "%s | Something Blue",
+    default: "Alegría Creative Cakes | Tortas Temáticas y Postres en Ecuador",
+    template: "%s | Alegría Creative Cakes",
   },
 
   description:
-    "Events & Branding, productos únicos y personalizados. Personalizamos productos para todos tus eventos, con envíos a todo el Ecuador.",
+    "Hacemos las tortas temáticas más lindas y deliciosas. Postres y dulces para eventos, diseños personalizados con envíos a todo lugar de Ecuador.",
 
   keywords: [
-    "diseño gráfico Ecuador",
-    "branding para eventos Ecuador",
-    "productos personalizados Ecuador",
-    "gift shop Ecuador",
-    "regalos personalizados eventos",
-    "decoración de eventos Ecuador",
-    "Something Blue",
-    "Paula Ferretti diseño",
-    "productos para bodas Ecuador",
-    "papelería personalizada Ecuador",
-    "branding de marca Ecuador",
-    "diseño de eventos Ecuador",
+    "tortas temáticas Ecuador",
+    "tortas personalizadas Ecuador",
+    "postres para eventos",
+    "dulces para eventos Ecuador",
+    "repostería creativa",
+    "Alegría Creative Cakes",
+    "pastelería Ecuador",
+    "tortas de cumpleaños Ecuador",
+    "diseños de tortas únicos",
+    "tienda de postres Ecuador",
+    "envíos de tortas Ecuador",
+    "pedidos de tortas online",
   ],
 
   creator: SITE_NAME,
@@ -72,17 +72,17 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
 
-    title: "Something Blue | Diseño Gráfico, Eventos y Branding",
+    title: "Alegría Creative Cakes | Tortas Temáticas y Postres",
 
     description:
-      "Events & Branding, productos únicos y personalizados. Personalizamos productos para todos tus eventos, con envíos a todo el Ecuador.",
+      "Hacemos las tortas temáticas más lindas y deliciosas. Postres y dulces para eventos, con envíos a todo lugar de Ecuador.",
 
     images: [
       {
         url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Something Blue - Diseño Gráfico y Branding",
+        alt: "Alegría Creative Cakes - Tortas temáticas y postres",
       },
     ],
   },
@@ -90,10 +90,10 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "Something Blue",
+    title: "Alegría Creative Cakes",
 
     description:
-      "Events & Branding, productos únicos y personalizados con envíos a todo el Ecuador.",
+      "Tortas temáticas, postres y dulces para eventos. Diseños personalizados con envíos a todo lugar de Ecuador.",
 
     images: [`${SITE_URL}/twitter-image.jpg`],
   },
@@ -125,7 +125,7 @@ export const metadata: Metadata = {
     title: SITE_NAME,
   },
 
-  category: "Diseño y Eventos",
+  category: "Repostería y Pastelería",
 };
 
 export const viewport: Viewport = {
