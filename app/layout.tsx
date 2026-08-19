@@ -17,9 +17,9 @@ export const revalidate = 1800;
 // Cambiar cuando tengas el dominio definitivo
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://alegriacreativecakes.com";
+  "https://tapiaelectronics.com";
 
-const SITE_NAME = "Alegría Creative Cakes | Tortas Temáticas y Postres en Ecuador";
+const SITE_NAME = "Tapia Electronics | Tecnología, Electrónica y Robótica en Ecuador";
 
 const sourceSerif4 = Source_Serif_4({
   subsets: ["latin"],
@@ -30,26 +30,24 @@ const sourceSerif4 = Source_Serif_4({
 
 export const metadata: Metadata = {
   title: {
-    default: "Alegría Creative Cakes | Tortas Temáticas y Postres en Ecuador",
-    template: "%s | Alegría Creative Cakes",
+    default: "Tapia Electronics | Tecnología, Electrónica y Robótica en Ecuador",
+    template: "%s | Tapia Electronics",
   },
 
   description:
-    "Hacemos las tortas temáticas más lindas y deliciosas. Postres y dulces para eventos, diseños personalizados con envíos a todo lugar de Ecuador.",
+    "Tienda de aparatos electrónicos en Guayaquil. Tecnología, electrónica, robótica y música. Envíos a todo Ecuador y aceptamos todas las tarjetas de crédito.",
 
   keywords: [
-    "tortas temáticas Ecuador",
-    "tortas personalizadas Ecuador",
-    "postres para eventos",
-    "dulces para eventos Ecuador",
-    "repostería creativa",
-    "Alegría Creative Cakes",
-    "pastelería Ecuador",
-    "tortas de cumpleaños Ecuador",
-    "diseños de tortas únicos",
-    "tienda de postres Ecuador",
-    "envíos de tortas Ecuador",
-    "pedidos de tortas online",
+    "tienda de electrónica Guayaquil",
+    "tecnología Ecuador",
+    "electrónica Ecuador",
+    "robótica Ecuador",
+    "componentes electrónicos Guayaquil",
+    "Tapia Electronics",
+    "aparatos electrónicos Ecuador",
+    "instrumentos musicales Guayaquil",
+    "envíos de electrónica Ecuador",
+    "compra electrónica online Ecuador",
   ],
 
   creator: SITE_NAME,
@@ -72,17 +70,17 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
 
-    title: "Alegría Creative Cakes | Tortas Temáticas y Postres",
+    title: "Tapia Electronics | Tecnología, Electrónica y Robótica",
 
     description:
-      "Hacemos las tortas temáticas más lindas y deliciosas. Postres y dulces para eventos, con envíos a todo lugar de Ecuador.",
+      "Tienda de aparatos electrónicos en Guayaquil. Tecnología que conecta tus momentos épicos, con envíos a todo Ecuador.",
 
     images: [
       {
         url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Alegría Creative Cakes - Tortas temáticas y postres",
+        alt: "Tapia Electronics - Tecnología, Electrónica y Robótica",
       },
     ],
   },
@@ -90,10 +88,10 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "Alegría Creative Cakes",
+    title: "Tapia Electronics",
 
     description:
-      "Tortas temáticas, postres y dulces para eventos. Diseños personalizados con envíos a todo lugar de Ecuador.",
+      "Tecnología, electrónica, robótica y música. Envíos a todo Ecuador.",
 
     images: [`${SITE_URL}/twitter-image.jpg`],
   },
@@ -125,7 +123,7 @@ export const metadata: Metadata = {
     title: SITE_NAME,
   },
 
-  category: "Repostería y Pastelería",
+  category: "Tecnología y Electrónica",
 };
 
 export const viewport: Viewport = {
@@ -143,7 +141,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={sourceSerif4.variable}>
       <head>
-        {/* Google Analytics */}
+        {/* Google Analytics - REEMPLAZAR con el ID de Tapia Electronics */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-K1Q0MYDSKF"
