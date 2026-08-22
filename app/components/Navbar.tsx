@@ -204,7 +204,7 @@ return (
               className="hidden lg:flex items-center leading-none"
             >
               <Image
-                src="/logo_tapia.png"
+                src="/logo01.png"
                 alt= "logo"
                 width={190}
                 height={60}
@@ -221,8 +221,8 @@ return (
               className="pointer-events-auto flex flex-col items-center leading-none"
             >
               <Image
-                src="/logo_tapia.png"
-                alt="Art Design MAKR"
+                src="/logo01.png"
+                alt="Logo"
                 width={180}
                 height={62}
                 priority
@@ -431,7 +431,7 @@ return (
                 className="font-bold text-base"
                 style={{ color: "#ffffff", letterSpacing: "0.08em" }}
               >
-                Tapia Electronics
+                Killari Joyas
               </span>
               <button
                 onClick={() => setMobileOpen(false)}

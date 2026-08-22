@@ -17,9 +17,9 @@ export const revalidate = 1800;
 // Cambiar cuando tengas el dominio definitivo
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://tapiaelectronics.com";
+  "https://killarijoyas.com";
 
-const SITE_NAME = "Tapia Electronics | Tecnología, Electrónica y Robótica en Ecuador";
+const SITE_NAME = "Killari | Joyas de Autor Ecuador";
 
 const sourceSerif4 = Source_Serif_4({
   subsets: ["latin"],
@@ -30,24 +30,23 @@ const sourceSerif4 = Source_Serif_4({
 
 export const metadata: Metadata = {
   title: {
-    default: "Tapia Electronics | Tecnología, Electrónica y Robótica en Ecuador",
-    template: "%s | Tapia Electronics",
+    default: "Killari | Joyas de Autor Hechas a Mano en Ecuador",
+    template: "%s | Killari",
   },
 
   description:
-    "Tienda de aparatos electrónicos en Guayaquil. Tecnología, electrónica, robótica y música. Envíos a todo Ecuador y aceptamos todas las tarjetas de crédito.",
+    "Joyas de autor hechas a mano en Ecuador, en plata 950 y oro, de estilo boho. Envíos a todo el mundo.",
 
   keywords: [
-    "tienda de electrónica Guayaquil",
-    "tecnología Ecuador",
-    "electrónica Ecuador",
-    "robótica Ecuador",
-    "componentes electrónicos Guayaquil",
-    "Tapia Electronics",
-    "aparatos electrónicos Ecuador",
-    "instrumentos musicales Guayaquil",
-    "envíos de electrónica Ecuador",
-    "compra electrónica online Ecuador",
+    "joyas de autor Ecuador",
+    "joyería hecha a mano Ecuador",
+    "plata 950 Ecuador",
+    "joyas boho Ecuador",
+    "Killari joyas",
+    "anillos plata Ecuador",
+    "joyería artesanal Ecuador",
+    "joyas oro y plata Ecuador",
+    "envíos joyería internacional",
   ],
 
   creator: SITE_NAME,
@@ -70,17 +69,17 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
 
-    title: "Tapia Electronics | Tecnología, Electrónica y Robótica",
+    title: "Killari | Joyas de Autor",
 
     description:
-      "Tienda de aparatos electrónicos en Guayaquil. Tecnología que conecta tus momentos épicos, con envíos a todo Ecuador.",
+      "Joyas de autor hechas a mano en Ecuador, en plata 950 y oro, de estilo boho. Envíos a todo el mundo.",
 
     images: [
       {
         url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Tapia Electronics - Tecnología, Electrónica y Robótica",
+        alt: "Killari - Joyas de Autor",
       },
     ],
   },
@@ -88,10 +87,10 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "Tapia Electronics",
+    title: "Killari",
 
     description:
-      "Tecnología, electrónica, robótica y música. Envíos a todo Ecuador.",
+      "Joyas de autor hechas a mano, plata 950 y oro, estilo boho. Envíos a todo el mundo.",
 
     images: [`${SITE_URL}/twitter-image.jpg`],
   },
@@ -123,7 +122,7 @@ export const metadata: Metadata = {
     title: SITE_NAME,
   },
 
-  category: "Tecnología y Electrónica",
+  category: "Joyería y Accesorios",
 };
 
 export const viewport: Viewport = {
@@ -141,7 +140,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={sourceSerif4.variable}>
       <head>
-        {/* Google Analytics - REEMPLAZAR con el ID de Tapia Electronics */}
+        {/* Google Analytics - REEMPLAZAR con el ID de Killari */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-K1Q0MYDSKF"
