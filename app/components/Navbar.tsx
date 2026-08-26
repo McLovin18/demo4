@@ -204,7 +204,7 @@ return (
               className="hidden lg:flex items-center leading-none"
             >
               <Image
-                src="/logo01.png"
+                src="/logo_a.png"
                 alt= "logo"
                 width={190}
                 height={60}
@@ -221,7 +221,7 @@ return (
               className="pointer-events-auto flex flex-col items-center leading-none"
             >
               <Image
-                src="/logo01.png"
+                src="/logo_a.png"
                 alt="Logo"
                 width={180}
                 height={62}
@@ -431,7 +431,7 @@ return (
                 className="font-bold text-base"
                 style={{ color: "#ffffff", letterSpacing: "0.08em" }}
               >
-                Killari Joyas
+              Alma Glow
               </span>
               <button
                 onClick={() => setMobileOpen(false)}

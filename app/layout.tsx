@@ -17,9 +17,9 @@ export const revalidate = 1800;
 // Cambiar cuando tengas el dominio definitivo
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://killarijoyas.com";
+  "https://almaglow.ec";
 
-const SITE_NAME = "Killari | Joyas de Autor Ecuador";
+const SITE_NAME = "Almaglow Ecuador";
 
 const sourceSerif4 = Source_Serif_4({
   subsets: ["latin"],
@@ -30,23 +30,22 @@ const sourceSerif4 = Source_Serif_4({
 
 export const metadata: Metadata = {
   title: {
-    default: "Killari | Joyas de Autor Hechas a Mano en Ecuador",
-    template: "%s | Killari",
+    default: "Almaglow | Ropa y Beauty, Ecuador",
+    template: "%s | Almaglow",
   },
 
   description:
-    "Joyas de autor hechas a mano en Ecuador, en plata 950 y oro, de estilo boho. Envíos a todo el mundo.",
+    "Almaglow: ropa y beauty para verte y sentirte linda. Pedidos por WhatsApp, envíos a nivel nacional en Ecuador.",
 
   keywords: [
-    "joyas de autor Ecuador",
-    "joyería hecha a mano Ecuador",
-    "plata 950 Ecuador",
-    "joyas boho Ecuador",
-    "Killari joyas",
-    "anillos plata Ecuador",
-    "joyería artesanal Ecuador",
-    "joyas oro y plata Ecuador",
-    "envíos joyería internacional",
+    "ropa de mujer Ecuador",
+    "beauty Ecuador",
+    "maquillaje Ecuador",
+    "ropa online Ecuador",
+    "Almaglow",
+    "moda femenina Ecuador",
+    "belleza y cuidado personal Ecuador",
+    "envíos nacionales ropa",
   ],
 
   creator: SITE_NAME,
@@ -69,17 +68,17 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
 
-    title: "Killari | Joyas de Autor",
+    title: "Almaglow | Ropa y Beauty",
 
     description:
-      "Joyas de autor hechas a mano en Ecuador, en plata 950 y oro, de estilo boho. Envíos a todo el mundo.",
+      "Almaglow: ropa y beauty para verte y sentirte linda. Pedidos por WhatsApp, envíos a nivel nacional en Ecuador.",
 
     images: [
       {
         url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Killari - Joyas de Autor",
+        alt: "Almaglow - Ropa y Beauty",
       },
     ],
   },
@@ -87,10 +86,10 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "Killari",
+    title: "Almaglow",
 
     description:
-      "Joyas de autor hechas a mano, plata 950 y oro, estilo boho. Envíos a todo el mundo.",
+      "Ropa y beauty para verte y sentirte linda. Envíos a nivel nacional en Ecuador.",
 
     images: [`${SITE_URL}/twitter-image.jpg`],
   },
@@ -122,7 +121,7 @@ export const metadata: Metadata = {
     title: SITE_NAME,
   },
 
-  category: "Joyería y Accesorios",
+  category: "Moda y Belleza",
 };
 
 export const viewport: Viewport = {
@@ -140,7 +139,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={sourceSerif4.variable}>
       <head>
-        {/* Google Analytics - REEMPLAZAR con el ID de Killari */}
+        {/* Google Analytics - REEMPLAZAR con el ID de Almaglow */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-K1Q0MYDSKF"
