@@ -204,7 +204,7 @@ return (
               className="hidden lg:flex items-center leading-none"
             >
               <Image
-                src="/logo_a.png"
+                src="/logo_ms.png"
                 alt= "logo"
                 width={190}
                 height={60}
@@ -221,7 +221,7 @@ return (
               className="pointer-events-auto flex flex-col items-center leading-none"
             >
               <Image
-                src="/logo_a.png"
+                src="/logo_ms.png"
                 alt="Logo"
                 width={180}
                 height={62}
@@ -431,7 +431,7 @@ return (
                 className="font-bold text-base"
                 style={{ color: "#ffffff", letterSpacing: "0.08em" }}
               >
-              Alma Glow
+              Milly Store
               </span>
               <button
                 onClick={() => setMobileOpen(false)}

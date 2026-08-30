@@ -17,9 +17,9 @@ export const revalidate = 1800;
 // Cambiar cuando tengas el dominio definitivo
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://almaglow.ec";
+  "https://millystoreec.com";
 
-const SITE_NAME = "Almaglow Ecuador";
+const SITE_NAME = "MILLY STORE | Moda Europea";
 
 const sourceSerif4 = Source_Serif_4({
   subsets: ["latin"],
@@ -30,22 +30,18 @@ const sourceSerif4 = Source_Serif_4({
 
 export const metadata: Metadata = {
   title: {
-    default: "Almaglow | Ropa y Beauty, Ecuador",
-    template: "%s | Almaglow",
+    default: "MILLY STORE | Moda Europea",
+    template: "%s | MILLY STORE",
   },
 
   description:
-    "Almaglow: ropa y beauty para verte y sentirte linda. Pedidos por WhatsApp, envíos a nivel nacional en Ecuador.",
+    "Boutique de moda europea. Tienda online con entrega inmediata y bajo pedido. Envíos a todo el Ecuador.",
 
   keywords: [
-    "ropa de mujer Ecuador",
-    "beauty Ecuador",
-    "maquillaje Ecuador",
-    "ropa online Ecuador",
-    "Almaglow",
-    "moda femenina Ecuador",
-    "belleza y cuidado personal Ecuador",
-    "envíos nacionales ropa",
+    "moda europea",
+    "boutique online Ecuador",
+    "ropa mujer Cariamanga",
+    "tienda de moda Loja Ecuador",
   ],
 
   creator: SITE_NAME,
@@ -68,17 +64,17 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
 
-    title: "Almaglow | Ropa y Beauty",
+    title: "MILLY STORE | Moda Europea",
 
     description:
-      "Almaglow: ropa y beauty para verte y sentirte linda. Pedidos por WhatsApp, envíos a nivel nacional en Ecuador.",
+      "Boutique de moda europea. Tienda online con entrega inmediata y bajo pedido. Envíos a todo el Ecuador.",
 
     images: [
       {
         url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Almaglow - Ropa y Beauty",
+        alt: "MILLY STORE | Moda Europea",
       },
     ],
   },
@@ -86,10 +82,10 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "Almaglow",
+    title: "MILLY STORE",
 
     description:
-      "Ropa y beauty para verte y sentirte linda. Envíos a nivel nacional en Ecuador.",
+      "Boutique de moda europea. Tienda online con entrega inmediata y bajo pedido. Envíos a todo el Ecuador.",
 
     images: [`${SITE_URL}/twitter-image.jpg`],
   },
@@ -121,7 +117,7 @@ export const metadata: Metadata = {
     title: SITE_NAME,
   },
 
-  category: "Moda y Belleza",
+  category: "moda y boutique",
 };
 
 export const viewport: Viewport = {
@@ -139,7 +135,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={sourceSerif4.variable}>
       <head>
-        {/* Google Analytics - REEMPLAZAR con el ID de Almaglow */}
+        {/* Google Analytics */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-K1Q0MYDSKF"
