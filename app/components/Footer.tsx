@@ -26,12 +26,12 @@ const IconWhatsApp = () => (
 );
 
 const socialLinks = [
-  { href: "https://www.instagram.com/soccer_planet.ec1/", label: "Instagram", Icon: IconInstagram },
+  { href: "https://www.instagram.com/caramelclothing/", label: "Instagram", Icon: IconInstagram },
 ];
 
 // 👉 Información del negocio
-const WHATSAPP_NUMBER = "593979265722"; // solo números, con código de país, sin '+' ni espacios
-const WHATSAPP_DISPLAY = "+593 97 926 5722"; // como se muestra al usuario
+const WHATSAPP_NUMBER = "593993670958"; // solo números, con código de país, sin '+' ni espacios
+const WHATSAPP_DISPLAY = "+593 99 367 0958"; // como se muestra al usuario
 
 const Footer: React.FC = () => {
   const pathname = usePathname();
@@ -79,7 +79,7 @@ const Footer: React.FC = () => {
             {/* Columna 1: Información de la tienda */}
             <div className="flex flex-col items-center md:items-start text-center md:text-left gap-1">
               <span className="text-base font-bold tracking-wide text-white">
-                Soccer Planet Ec
+                Caramel Clothing
               </span>
 
               {instagramEnabled && instagramFollowers !== null && instagramFollowers > 0 && (
@@ -92,12 +92,12 @@ const Footer: React.FC = () => {
               )}
 
               <div className="text-xs text-white/60 mt-1 max-w-[220px]">
-                <p>Camisetas retro que reviven leyendas</p>
-                <p>Finales épicas y pasión</p>
-                <p>Envíos a todo el Ecuador</p>
+                <p>Bikini Atelier</p>
+                <p>14 años creando Alta Costura para Sirenas</p>
+                <p>Envíos Worldwide</p>
                 <p className="flex items-center gap-1 justify-center md:justify-start mt-0.5">
                   <IconLocation />
-                  Ecuador
+                  Hecho en Ecuador
                 </p>
               </div>
             </div>
@@ -161,7 +161,7 @@ const Footer: React.FC = () => {
         {/* Copyright row */}
         <div className={styles.ftCopyRow}>
           <p className="text-xs text-white/50">
-            © {new Date().getFullYear()} Soccer Planet Ec. Todos los derechos reservados.
+            © {new Date().getFullYear()} Caramel Clothing. Todos los derechos reservados.
           </p>
           <div className={styles.ftCopyRight}>
             <div className="flex items-center gap-1.5 text-xs text-white/60">

@@ -204,7 +204,7 @@ return (
               className="hidden lg:flex items-center leading-none"
             >
               <Image
-                src="/logo_sp.png"
+                src="/logo_d4.png"
                 alt= "logo"
                 width={190}
                 height={60}
@@ -221,7 +221,7 @@ return (
               className="pointer-events-auto flex flex-col items-center leading-none"
             >
               <Image
-                src="/logo_sp.png"
+                src="/logo_d4.png"
                 alt="Logo"
                 width={180}
                 height={62}

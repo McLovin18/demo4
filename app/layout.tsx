@@ -11,8 +11,8 @@ import { Inter } from "next/font/google";
 // Optimiza regeneración de página principal y otros contenidos estáticos
 export const revalidate = 1800;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://soccerplanet.ec"; // ⚠️ Reemplazar con dominio de producción
-const SITE_NAME = "Soccer Planet Ec";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://caramelclothing.ec"; // ⚠️ Reemplazar con dominio de producción
+const SITE_NAME = "Caramel Clothing";
 const cormorantGaramond = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "600"],
@@ -27,24 +27,24 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Soccer Planet Ec | Camisetas Retro de Fútbol",
-    template: "%s | Soccer Planet Ec",
+    default: "Caramel Clothing | Bikini Atelier, Alta Costura para Sirenas",
+    template: "%s | Caramel Clothing",
   },
   description:
-    "Soccer Planet Ec: camisetas retro que reviven leyendas, finales épicas y pasión. Envíos a todo el Ecuador.",
+    "Caramel Clothing: 14 años creando alta costura en bikinis. Hecho en Ecuador, envíos worldwide. Shop, catálogos, asesoría y workshops.",
   keywords: [
-    "camisetas retro Ecuador",
-    "camisetas de fútbol vintage",
-    "jerseys retro Ecuador",
-    "Soccer Planet Ec",
-    "camisetas de leyendas del fútbol",
-    "ropa deportiva retro",
-    "camisetas selecciones históricas",
-    "fútbol vintage Ecuador",
-    "envíos nacionales camisetas",
-    "tienda de fútbol Ecuador",
+    "bikinis a medida Ecuador",
+    "alta costura bikinis",
+    "bikini atelier",
+    "Caramel Clothing",
+    "trajes de baño artesanales",
+    "moda de baño Ecuador",
+    "envíos worldwide bikinis",
+    "workshops de costura Ecuador",
+    "ropa de baño hecha a mano",
+    "emprendimiento femenino Ecuador",
   ],
-  creator: "Soccer Planet Ec",
+  creator: "Caramel Clothing",
   metadataBase: new URL(SITE_URL),
   icons: {
     icon: "/favicon.ico",
@@ -59,15 +59,15 @@ export const metadata: Metadata = {
     locale: "es_EC",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Soccer Planet Ec | Camisetas Retro de Fútbol",
+    title: "Caramel Clothing | Bikini Atelier, Alta Costura para Sirenas",
     description:
-      "Soccer Planet Ec: camisetas retro que reviven leyendas, finales épicas y pasión. Envíos a todo el Ecuador.",
+      "Caramel Clothing: 14 años creando alta costura en bikinis. Hecho en Ecuador, envíos worldwide. Shop, catálogos, asesoría y workshops.",
     images: [
       {
         url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Soccer Planet Ec - Camisetas Retro de Fútbol",
+        alt: "Caramel Clothing - Bikini Atelier",
         type: "image/jpeg",
       },
     ],
@@ -76,9 +76,9 @@ export const metadata: Metadata = {
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "Soccer Planet Ec | Camisetas Retro",
+    title: "Caramel Clothing | Alta Costura para Sirenas",
     description:
-      "Camisetas retro que reviven leyendas, finales épicas y pasión. Envíos a todo el Ecuador.",
+      "Bikini Atelier hecho en Ecuador, envíos worldwide. Shop, catálogos, asesoría y workshops.",
     images: [`${SITE_URL}/twitter-image.jpg`],
   },
 
@@ -113,7 +113,7 @@ export const metadata: Metadata = {
     title: SITE_NAME,
   },
 
-  category: "Ropa Deportiva",
+  category: "Moda y Ropa de Baño",
 };
 
 // Viewport export - separate from metadata in Next.js 16
@@ -130,7 +130,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* Google Analytics gtag.js - insertado justo después de <head> */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-        {/* ⚠️ Reemplazar G-XXXXXXXXXX con el ID de Analytics propio de Soccer Planet Ec */}
+        {/* ⚠️ Reemplazar G-XXXXXXXXXX con el ID de Analytics propio de Caramel Clothing */}
         <script
           dangerouslySetInnerHTML={{
             __html: `

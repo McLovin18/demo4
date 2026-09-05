@@ -7,6 +7,7 @@ import WhatsAppFloatingButton from "./components/WhatsAppFloatingButton";
 import HomeCategoriesProductsSection from "./components/HomeCategoriesProductsSection";
 import { SectionRenderer } from "./landing/sectionRegistry";
 import { getLandingPage } from "./lib/landing-db";
+import { obtenerCategorias } from "./lib/categorias-db";
 import { obtenerProductos } from "./lib/productos-db";
 import type { LandingSection } from "./lib/landing-types";
 import { useUser } from "./context/UserContext";
@@ -20,6 +21,7 @@ export default function Home() {
   } | null>(null);
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [featuredProductsResolved, setFeaturedProductsResolved] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,9 +29,10 @@ export default function Home() {
 
     const loadLanding = async () => {
       try {
-        const [data, products] = await Promise.all([
+        const [data, products, categoryList] = await Promise.all([
           getLandingPage(),
           obtenerProductos(),
+          obtenerCategorias(),
         ]);
 
         // Get all products, sort by newest first, take top 8
@@ -42,6 +45,7 @@ export default function Home() {
           setLanding(data);
           setAllProducts(products || []);
           setFeaturedProductsResolved(recentProducts);
+          setCategories(categoryList || []);
         }
       } catch (error) {
         console.error("Error cargando landing publicada:", error);
@@ -49,6 +53,7 @@ export default function Home() {
           setLanding(null);
           setAllProducts([]);
           setFeaturedProductsResolved([]);
+          setCategories([]);
         }
       } finally {
         if (mounted) {
@@ -95,7 +100,9 @@ export default function Home() {
 
         return {
           id: catId,
-          title: catId,
+          title:
+            categories.find((category) => String(category?.id) === catId)?.nombre ||
+            catId,
           image: product?.imagenes?.[0] || product?.imagen || null,
           link: `/products-by-category?cat=${encodeURIComponent(catId)}`,
         };
@@ -138,7 +145,7 @@ export default function Home() {
 
       return section;
     });
-  }, [landingSections, featuredProductsResolved]);
+  }, [categories, landingSections, featuredProductsResolved]);
 
 
     // Detecta el índice del último hero
