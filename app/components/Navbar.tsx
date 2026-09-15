@@ -13,6 +13,7 @@ import {
 import { obtenerProductos } from "../lib/productos-db";
 import { useUser } from "../context/UserContext";
 import { productMatches } from "../lib/search-utils";
+import { useSiteSettings } from "../context/SiteSettingsContext";
 
 // ─────────────────────────────────────────────
 // Paleta de marca — Tienda Virtual
@@ -40,6 +41,7 @@ export const Navbar = () => {
   const [openCatId, setOpenCatId] = useState<string | null>(null);
   const [openSubId, setOpenSubId] = useState<string | null>(null);
   const { user, carrito } = useUser();
+  const { settings } = useSiteSettings();
   const [windowWidth, setWindowWidth] = useState<number | null>(null);
 
   // Barra de búsqueda
@@ -203,14 +205,25 @@ return (
               href={user ? "/admin" : "/"}
               className="hidden lg:flex items-center leading-none"
             >
-              <Image
-                src="/logo_d4.png"
-                alt= "logo"
-                width={190}
-                height={60}
-                priority
-                style={{ height:"65px", width: "auto"}}
-              />
+              {settings.logoUrl ? (
+                <Image
+                  src={settings.logoUrl}
+                  alt={settings.businessName}
+                  width={190}
+                  height={60}
+                  priority
+                  style={{ height:"65px", width: "auto"}}
+                />
+              ) : (
+                <Image
+                  src="/logo_d4.png"
+                  alt={settings.businessName}
+                  width={190}
+                  height={60}
+                  priority
+                  style={{ height:"65px", width: "auto"}}
+                />
+              )}
             </a>
           </div>
 
@@ -220,14 +233,25 @@ return (
               href={user ? "/admin" : "/"}
               className="pointer-events-auto flex flex-col items-center leading-none"
             >
-              <Image
-                src="/logo_d4.png"
-                alt="Logo"
-                width={180}
-                height={62}
-                priority
-                style={{ height: "65px",width: "auto"}}
-              />
+              {settings.logoUrl ? (
+                <Image
+                  src={settings.logoUrl}
+                  alt={settings.businessName}
+                  width={180}
+                  height={62}
+                  priority
+                  style={{ height: "65px",width: "auto"}}
+                />
+              ) : (
+                <Image
+                  src="/logo_d4.png"
+                  alt={settings.businessName}
+                  width={180}
+                  height={62}
+                  priority
+                  style={{ height: "65px",width: "auto"}}
+                />
+              )}
             </a>
           </div>
 
@@ -431,7 +455,7 @@ return (
                 className="font-bold text-base"
                 style={{ color: "#ffffff", letterSpacing: "0.08em" }}
               >
-              Soccer Planet
+              {settings.businessName}
               </span>
               <button
                 onClick={() => setMobileOpen(false)}

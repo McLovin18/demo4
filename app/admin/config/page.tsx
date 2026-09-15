@@ -1,10 +1,34 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { doc, setDoc, onSnapshot, updateDoc, deleteField } from "firebase/firestore";
 import { db } from "../../lib/firebase";
-import { uploadImageAndGetUrl } from "../../lib/upload-image";
 import { useSiteSettings } from "../../context/SiteSettingsContext";
+import { uploadImageAndGetUrl } from "../../lib/upload-image";
+
+// Función auxiliar para limpiar datos de undefined recursivamente
+function cleanUndefined(obj: any): any {
+  if (obj === null || obj === undefined) {
+    return null;
+  }
+  
+  if (Array.isArray(obj)) {
+    return obj.map(cleanUndefined);
+  }
+  
+  if (typeof obj === 'object') {
+    const cleaned: any = {};
+    for (const key in obj) {
+      if (obj[key] !== undefined) {
+        cleaned[key] = cleanUndefined(obj[key]);
+      }
+    }
+    return cleaned;
+  }
+  
+  return obj;
+}
+
+import { getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { getInstagramConfig } from "../../lib/instagram-db";
 
 export default function ConfigPage() {
@@ -47,6 +71,24 @@ export default function ConfigPage() {
       <div className="mt-12">
         <h2 className="text-lg font-semibold mb-2">Marca de agua</h2>
         <WatermarkSettings />
+      </div>
+
+      {/* Información del negocio */}
+      <div className="mt-12">
+        <h2 className="text-lg font-semibold mb-2">Información del negocio</h2>
+        <BusinessInfoSettings />
+      </div>
+
+      {/* Información del footer */}
+      <div className="mt-12">
+        <h2 className="text-lg font-semibold mb-2">Información del footer</h2>
+        <FooterInfoSettings />
+      </div>
+
+      {/* SEO */}
+      <div className="mt-12">
+        <h2 className="text-lg font-semibold mb-2">SEO</h2>
+        <SEOSettings />
       </div>
 
       {/* Instagram */}
@@ -432,3 +474,426 @@ function ChangePasswordForm() {
   );
 }
 
+
+// Componente para información del negocio
+function BusinessInfoSettings() {
+  const { settings } = useSiteSettings();
+  const [businessName, setBusinessName] = useState(settings.businessName || "");
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(settings.logoUrl || null);
+  const [phoneNumber, setPhoneNumber] = useState(settings.phoneNumber || "");
+  const [phoneDisplay, setPhoneDisplay] = useState(settings.phoneDisplay || "");
+  const [whatsappNumber, setWhatsappNumber] = useState(settings.whatsappNumber || "");
+  const [whatsappDisplay, setWhatsappDisplay] = useState(settings.whatsappDisplay || "");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setBusinessName(settings.businessName || "");
+    setLogoPreview(settings.logoUrl || null);
+    setPhoneNumber(settings.phoneNumber || "");
+    setPhoneDisplay(settings.phoneDisplay || "");
+    setWhatsappNumber(settings.whatsappNumber || "");
+    setWhatsappDisplay(settings.whatsappDisplay || "");
+  }, [settings]);
+
+  useEffect(() => {
+    if (!logoFile) {
+      setLogoPreview(null);
+      return;
+    }
+    const url = URL.createObjectURL(logoFile);
+    setLogoPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [logoFile]);
+
+  const handleSave = async () => {
+    setMessage("");
+    setLoading(true);
+    try {
+      let logoUrl = settings.logoUrl;
+      
+      if (logoFile) {
+        const path = `landing_page/logo/logo_${Date.now()}.${logoFile.name.split('.').pop()}`;
+        logoUrl = await uploadImageAndGetUrl(logoFile, path);
+      }
+
+      const dataToUpdate: Record<string, any> = {
+        businessName,
+        phoneNumber,
+        phoneDisplay,
+        whatsappNumber,
+        whatsappDisplay,
+      };
+
+      if (logoUrl !== null) {
+        dataToUpdate.logoUrl = logoUrl;
+      }
+
+      // Limpiar undefined recursivamente
+      const cleanedData = cleanUndefined(dataToUpdate);
+
+      await setDoc(
+        doc(db, "landingPage", "main"),
+        cleanedData,
+        { merge: true }
+      );
+      setMessage("Información del negocio guardada correctamente.");
+      setLogoFile(null);
+    } catch (e: any) {
+      setMessage("Error: " + (e?.message || "No se pudo guardar la información"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">Nombre del negocio</label>
+          <input
+            type="text"
+            value={businessName}
+            onChange={(e) => setBusinessName(e.target.value)}
+            disabled={loading}
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">Número de teléfono</label>
+          <input
+            type="text"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            disabled={loading}
+            placeholder="Solo números, con código de país"
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">Teléfono (display)</label>
+          <input
+            type="text"
+            value={phoneDisplay}
+            onChange={(e) => setPhoneDisplay(e.target.value)}
+            disabled={loading}
+            placeholder="Como se muestra al usuario"
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">WhatsApp (número)</label>
+          <input
+            type="text"
+            value={whatsappNumber}
+            onChange={(e) => setWhatsappNumber(e.target.value)}
+            disabled={loading}
+            placeholder="Solo números, con código de país"
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">WhatsApp (display)</label>
+          <input
+            type="text"
+            value={whatsappDisplay}
+            onChange={(e) => setWhatsappDisplay(e.target.value)}
+            disabled={loading}
+            placeholder="Como se muestra al usuario"
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-slate-700 mb-2">Logo</label>
+        <input
+          type="file"
+          accept="image/*"
+          disabled={loading}
+          onChange={(e) => setLogoFile(e.target.files?.[0] || null)}
+          className="block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base file:mr-4 file:rounded-full file:border-0 file:bg-rose-500 file:px-4 file:py-2 file:text-white file:font-semibold disabled:opacity-60"
+        />
+      </div>
+
+      {logoPreview && (
+        <div className="rounded-xl border border-slate-200 bg-white p-3">
+          <div className="text-xs font-semibold text-slate-600 mb-2">Vista previa</div>
+          <img src={logoPreview} alt="Logo preview" className="max-h-32 object-contain" />
+        </div>
+      )}
+
+      <button
+        type="button"
+        onClick={handleSave}
+        disabled={loading}
+        className="bg-rose-600 text-white px-4 py-2 rounded-xl font-semibold disabled:opacity-60"
+      >
+        {loading ? "Guardando..." : "Guardar información"}
+      </button>
+
+      {message && (
+        <div className={`text-sm ${message.startsWith("Error") ? "text-red-600" : "text-green-600"}`}>
+          {message}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Componente para información del footer
+function FooterInfoSettings() {
+  const { settings } = useSiteSettings();
+  const [businessDescription, setBusinessDescription] = useState(settings.businessDescription?.join("\n") || "");
+  const [businessAddress, setBusinessAddress] = useState(settings.businessAddress || "");
+  const [instagram, setInstagram] = useState(settings.socialLinks?.instagram || "");
+  const [tiktok, setTiktok] = useState(settings.socialLinks?.tiktok || "");
+  const [facebook, setFacebook] = useState(settings.socialLinks?.facebook || "");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setBusinessDescription(settings.businessDescription?.join("\n") || "");
+    setBusinessAddress(settings.businessAddress || "");
+    setInstagram(settings.socialLinks?.instagram || "");
+    setTiktok(settings.socialLinks?.tiktok || "");
+    setFacebook(settings.socialLinks?.facebook || "");
+  }, [settings]);
+
+  const handleSave = async () => {
+    setMessage("");
+    setLoading(true);
+    try {
+      const descriptionLines = businessDescription.split("\n").filter(line => line.trim());
+
+      const dataToUpdate: Record<string, any> = {
+        businessDescription: descriptionLines,
+        businessAddress,
+        socialLinks: {
+          instagram: instagram || null,
+          tiktok: tiktok || null,
+          facebook: facebook || null,
+        },
+      };
+
+      // Limpiar undefined recursivamente
+      const cleanedData = cleanUndefined(dataToUpdate);
+
+      await setDoc(
+        doc(db, "landingPage", "main"),
+        cleanedData,
+        { merge: true }
+      );
+      setMessage("Información del footer guardada correctamente.");
+    } catch (e: any) {
+      setMessage("Error: " + (e?.message || "No se pudo guardar la información"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className="block text-sm font-semibold text-slate-700 mb-2">Descripción del negocio (una línea por párrafo)</label>
+        <textarea
+          value={businessDescription}
+          onChange={(e) => setBusinessDescription(e.target.value)}
+          disabled={loading}
+          rows={4}
+          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-slate-700 mb-2">Dirección</label>
+        <input
+          type="text"
+          value={businessAddress}
+          onChange={(e) => setBusinessAddress(e.target.value)}
+          disabled={loading}
+          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">Instagram URL</label>
+          <input
+            type="url"
+            value={instagram}
+            onChange={(e) => setInstagram(e.target.value)}
+            disabled={loading}
+            placeholder="https://instagram.com/..."
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">TikTok URL</label>
+          <input
+            type="url"
+            value={tiktok}
+            onChange={(e) => setTiktok(e.target.value)}
+            disabled={loading}
+            placeholder="https://tiktok.com/..."
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">Facebook URL</label>
+          <input
+            type="url"
+            value={facebook}
+            onChange={(e) => setFacebook(e.target.value)}
+            disabled={loading}
+            placeholder="https://facebook.com/..."
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+          />
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleSave}
+        disabled={loading}
+        className="bg-rose-600 text-white px-4 py-2 rounded-xl font-semibold disabled:opacity-60"
+      >
+        {loading ? "Guardando..." : "Guardar información"}
+      </button>
+
+      {message && (
+        <div className={`text-sm ${message.startsWith("Error") ? "text-red-600" : "text-green-600"}`}>
+          {message}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Componente para SEO
+function SEOSettings() {
+  const { settings } = useSiteSettings();
+  const [seoTitle, setSeoTitle] = useState(settings.seoTitle || "");
+  const [seoDescription, setSeoDescription] = useState(settings.seoDescription || "");
+  const [seoKeywords, setSeoKeywords] = useState(settings.seoKeywords?.join(", ") || "");
+  const [siteUrl, setSiteUrl] = useState(settings.siteUrl || "");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setSeoTitle(settings.seoTitle || "");
+    setSeoDescription(settings.seoDescription || "");
+    setSeoKeywords(settings.seoKeywords?.join(", ") || "");
+    setSiteUrl(settings.siteUrl || "");
+  }, [settings]);
+
+  const handleSave = async () => {
+    setMessage("");
+    setLoading(true);
+    try {
+      const keywordsArray = seoKeywords.split(",").map(k => k.trim()).filter(k => k);
+
+      const dataToUpdate: Record<string, any> = {
+        seoTitle,
+        seoDescription,
+        seoKeywords: keywordsArray,
+        siteUrl,
+      };
+
+      // Limpiar undefined recursivamente
+      const cleanedData = cleanUndefined(dataToUpdate);
+
+      // Primero eliminar campos problematicos del documento existente
+      try {
+        await updateDoc(doc(db, "landingPage", "main"), {
+          seoOgImage: deleteField(),
+        });
+      } catch (e) {
+        // Ignorar si el campo no existe
+      }
+
+      await setDoc(
+        doc(db, "landingPage", "main"),
+        cleanedData,
+        { merge: true }
+      );
+      setMessage("Configuración SEO guardada correctamente.");
+    } catch (e: any) {
+      setMessage("Error: " + (e?.message || "No se pudo guardar la configuración SEO"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className="block text-sm font-semibold text-slate-700 mb-2">Título SEO</label>
+        <input
+          type="text"
+          value={seoTitle}
+          onChange={(e) => setSeoTitle(e.target.value)}
+          disabled={loading}
+          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-slate-700 mb-2">Descripción SEO</label>
+        <textarea
+          value={seoDescription}
+          onChange={(e) => setSeoDescription(e.target.value)}
+          disabled={loading}
+          rows={3}
+          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-slate-700 mb-2">Keywords (separados por coma)</label>
+        <input
+          type="text"
+          value={seoKeywords}
+          onChange={(e) => setSeoKeywords(e.target.value)}
+          disabled={loading}
+          placeholder="keyword1, keyword2, keyword3"
+          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-slate-700 mb-2">URL del sitio</label>
+        <input
+          type="url"
+          value={siteUrl}
+          onChange={(e) => setSiteUrl(e.target.value)}
+          disabled={loading}
+          placeholder="https://tu-sitio.com"
+          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base disabled:opacity-60"
+        />
+      </div>
+
+      <button
+        type="button"
+        onClick={handleSave}
+        disabled={loading}
+        className="bg-rose-600 text-white px-4 py-2 rounded-xl font-semibold disabled:opacity-60"
+      >
+        {loading ? "Guardando..." : "Guardar configuración SEO"}
+      </button>
+
+      {message && (
+        <div className={`text-sm ${message.startsWith("Error") ? "text-red-600" : "text-green-600"}`}>
+          {message}
+        </div>
+      )}
+    </div>
+  );
+}

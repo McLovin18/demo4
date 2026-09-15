@@ -8,6 +8,7 @@ import BottomBarPublic from "../components/BottomBarPublic";
 import { obtenerAtributos } from "../lib/atributos-db";
 import ModalTransferencia from "../components/ModalTransferencia";
 import { useTracking } from "../lib/useAnalytics";
+import { useSiteSettings } from "../context/SiteSettingsContext";
 
 function resolveCartItemKey(item: any) {
   if (!item) return "";
@@ -70,6 +71,7 @@ export default function CartPage() {
   const [atributos, setAtributos] = useState<any[]>([]);
   const [showModalTransferencia, setShowModalTransferencia] = useState(false);
   const { trackPurchaseWhatsApp, trackPurchaseTransfer } = useTracking();
+  const { settings } = useSiteSettings();
 
   const calcularPrecioData = (p: any) => {
     const { basePrice, discount, hasDiscount, fakeOldPrice, finalPrice } = getSnapshotPricing(p);
@@ -189,7 +191,7 @@ export default function CartPage() {
     // Si se abre después de un await, el navegador lo bloquea sin avisar.
     const whatsappWindow = window.open("", "_blank");
 
-    const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "593993670958";
+    const whatsappNumber = settings.whatsappNumber || "593993670958";
     const message = await generateWhatsAppMessage();
     const url = `https://wa.me/${whatsappNumber}?text=${message}`;
 
