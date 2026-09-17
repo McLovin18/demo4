@@ -6,26 +6,20 @@ import { doc, onSnapshot } from "firebase/firestore";
 
 type SiteSettings = {
   productWatermarkUrl: string | null;
-  // Información del negocio
-  businessName: string;
   logoUrl: string | null;
+  businessName: string;
   phoneNumber: string;
-  phoneDisplay: string;
   whatsappNumber: string;
   whatsappDisplay: string;
-  // Información del footer
-  businessDescription: string[];
+  instagramUrl: string;
+  tiktokUrl: string;
+  facebookUrl: string;
+  businessDescription: string;
   businessAddress: string;
-  socialLinks: {
-    instagram: string | null;
-    tiktok: string | null;
-    facebook: string | null;
-  };
-  // SEO
   seoTitle: string;
   seoDescription: string;
-  seoKeywords: string[];
-  siteUrl: string;
+  seoKeywords: string;
+  seoOgImage: string | null;
 };
 
 type SiteSettingsContextType = {
@@ -38,38 +32,20 @@ const SiteSettingsContext = createContext<SiteSettingsContextType | undefined>(u
 export function SiteSettingsProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [productWatermarkUrl, setProductWatermarkUrl] = useState<string | null>(null);
-  const [businessName, setBusinessName] = useState("Caramel Clothing");
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [businessName, setBusinessName] = useState("CALI KIDS");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [phoneDisplay, setPhoneDisplay] = useState("");
-  const [whatsappNumber, setWhatsappNumber] = useState("593993670958");
-  const [whatsappDisplay, setWhatsappDisplay] = useState("+593 99 367 0958");
-  const [businessDescription, setBusinessDescription] = useState<string[]>([
-    "Bikini Atelier",
-    "14 años creando Alta Costura para Sirenas",
-    "Envíos Worldwide"
-  ]);
-  const [businessAddress, setBusinessAddress] = useState("Hecho en Ecuador");
-  const [socialLinks, setSocialLinks] = useState({
-    instagram: "https://www.instagram.com/caramelclothing/",
-    tiktok: null,
-    facebook: null,
-  });
-  const [seoTitle, setSeoTitle] = useState("Caramel Clothing | Bikini Atelier, Alta Costura para Sirenas");
-  const [seoDescription, setSeoDescription] = useState("Caramel Clothing: 14 años creando alta costura en bikinis. Hecho en Ecuador, envíos worldwide. Shop, catálogos, asesoría y workshops.");
-  const [seoKeywords, setSeoKeywords] = useState<string[]>([
-    "bikinis a medida Ecuador",
-    "alta costura bikinis",
-    "bikini atelier",
-    "Caramel Clothing",
-    "trajes de baño artesanales",
-    "moda de baño Ecuador",
-    "envíos worldwide bikinis",
-    "workshops de costura Ecuador",
-    "ropa de baño hecha a mano",
-    "emprendimiento femenino Ecuador",
-  ]);
-  const [siteUrl, setSiteUrl] = useState("https://caramelclothing.ec");
+  const [whatsappNumber, setWhatsappNumber] = useState("593990077959");
+  const [whatsappDisplay, setWhatsappDisplay] = useState("+593 99 007 7959");
+  const [instagramUrl, setInstagramUrl] = useState("https://www.instagram.com/calikidsmobiliario/");
+  const [tiktokUrl, setTiktokUrl] = useState("");
+  const [facebookUrl, setFacebookUrl] = useState("");
+  const [businessDescription, setBusinessDescription] = useState("Mobiliario infantil fabricado a medida. 100% en madera");
+  const [businessAddress, setBusinessAddress] = useState("Envíos a todo el Ecuador 🇪🇨");
+  const [seoTitle, setSeoTitle] = useState("CALI KIDS | Diseño & muebles infantiles a medida");
+  const [seoDescription, setSeoDescription] = useState("Mobiliario infantil fabricado a medida, 100% en madera. Envíos a todo el Ecuador.");
+  const [seoKeywords, setSeoKeywords] = useState("muebles infantiles, mobiliario infantil a medida, muebles de madera para niños, diseño de muebles infantiles Ecuador");
+  const [seoOgImage, setSeoOgImage] = useState<string | null>(null);
 
   useEffect(() => {
     const ref = doc(db, "landingPage", "main");
@@ -77,35 +53,50 @@ export function SiteSettingsProvider({ children }: { children: React.ReactNode }
       ref,
       (snap) => {
         const data = (snap.data() || {}) as Record<string, unknown>;
-        
-        // Cargar campos existentes
         const url = typeof data.productWatermarkUrl === "string" ? data.productWatermarkUrl : null;
         setProductWatermarkUrl(url);
         
-        // Cargar nuevos campos de configuración
-        if (typeof data.businessName === "string") setBusinessName(data.businessName);
-        if (typeof data.logoUrl === "string") setLogoUrl(data.logoUrl);
-        if (typeof data.phoneNumber === "string") setPhoneNumber(data.phoneNumber);
-        if (typeof data.phoneDisplay === "string") setPhoneDisplay(data.phoneDisplay);
-        if (typeof data.whatsappNumber === "string") setWhatsappNumber(data.whatsappNumber);
-        if (typeof data.whatsappDisplay === "string") setWhatsappDisplay(data.whatsappDisplay);
+        const logo = typeof data.logoUrl === "string" ? data.logoUrl : null;
+        setLogoUrl(logo);
         
-        if (Array.isArray(data.businessDescription)) setBusinessDescription(data.businessDescription);
-        if (typeof data.businessAddress === "string") setBusinessAddress(data.businessAddress);
+        const name = typeof data.businessName === "string" ? data.businessName : "CALI KIDS";
+        setBusinessName(name);
         
-        if (typeof data.socialLinks === "object" && data.socialLinks !== null) {
-          const links = data.socialLinks as Record<string, unknown>;
-          setSocialLinks({
-            instagram: typeof links.instagram === "string" ? links.instagram : null,
-            tiktok: typeof links.tiktok === "string" ? links.tiktok : null,
-            facebook: typeof links.facebook === "string" ? links.facebook : null,
-          });
-        }
+        const phone = typeof data.phoneNumber === "string" ? data.phoneNumber : "";
+        setPhoneNumber(phone);
         
-        if (typeof data.seoTitle === "string") setSeoTitle(data.seoTitle);
-        if (typeof data.seoDescription === "string") setSeoDescription(data.seoDescription);
-        if (Array.isArray(data.seoKeywords)) setSeoKeywords(data.seoKeywords);
-        if (typeof data.siteUrl === "string") setSiteUrl(data.siteUrl);
+        const waNumber = typeof data.whatsappNumber === "string" ? data.whatsappNumber : "593990077959";
+        setWhatsappNumber(waNumber);
+        
+        const waDisplay = typeof data.whatsappDisplay === "string" ? data.whatsappDisplay : "+593 99 007 7959";
+        setWhatsappDisplay(waDisplay);
+        
+        const insta = typeof data.instagramUrl === "string" ? data.instagramUrl : "https://www.instagram.com/calikidsmobiliario/";
+        setInstagramUrl(insta);
+        
+        const tiktok = typeof data.tiktokUrl === "string" ? data.tiktokUrl : "";
+        setTiktokUrl(tiktok);
+        
+        const facebook = typeof data.facebookUrl === "string" ? data.facebookUrl : "";
+        setFacebookUrl(facebook);
+        
+        const businessDesc = typeof data.businessDescription === "string" ? data.businessDescription : "Mobiliario infantil fabricado a medida. 100% en madera";
+        setBusinessDescription(businessDesc);
+        
+        const address = typeof data.businessAddress === "string" ? data.businessAddress : "Envíos a todo el Ecuador 🇪🇨";
+        setBusinessAddress(address);
+        
+        const title = typeof data.seoTitle === "string" ? data.seoTitle : "CALI KIDS | Diseño & muebles infantiles a medida";
+        setSeoTitle(title);
+        
+        const seoDesc = typeof data.seoDescription === "string" ? data.seoDescription : "Mobiliario infantil fabricado a medida, 100% en madera. Envíos a todo el Ecuador.";
+        setSeoDescription(seoDesc);
+        
+        const keywords = typeof data.seoKeywords === "string" ? data.seoKeywords : "muebles infantiles, mobiliario infantil a medida, muebles de madera para niños, diseño de muebles infantiles Ecuador";
+        setSeoKeywords(keywords);
+        
+        const ogImage = typeof data.seoOgImage === "string" ? data.seoOgImage : null;
+        setSeoOgImage(ogImage);
         
         setLoading(false);
       },
@@ -122,22 +113,23 @@ export function SiteSettingsProvider({ children }: { children: React.ReactNode }
       loading,
       settings: {
         productWatermarkUrl,
-        businessName,
         logoUrl,
+        businessName,
         phoneNumber,
-        phoneDisplay,
         whatsappNumber,
         whatsappDisplay,
+        instagramUrl,
+        tiktokUrl,
+        facebookUrl,
         businessDescription,
         businessAddress,
-        socialLinks,
         seoTitle,
         seoDescription,
         seoKeywords,
-        siteUrl,
+        seoOgImage,
       },
     };
-  }, [loading, productWatermarkUrl, businessName, logoUrl, phoneNumber, phoneDisplay, whatsappNumber, whatsappDisplay, businessDescription, businessAddress, socialLinks, seoTitle, seoDescription, seoKeywords, siteUrl]);
+  }, [loading, productWatermarkUrl, logoUrl, businessName, phoneNumber, whatsappNumber, whatsappDisplay, instagramUrl, tiktokUrl, facebookUrl, businessDescription, businessAddress, seoTitle, seoDescription, seoKeywords, seoOgImage]);
 
   return (
     <SiteSettingsContext.Provider value={value}>

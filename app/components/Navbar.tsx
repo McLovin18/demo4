@@ -12,8 +12,8 @@ import {
 } from "../lib/categorias-db";
 import { obtenerProductos } from "../lib/productos-db";
 import { useUser } from "../context/UserContext";
-import { productMatches } from "../lib/search-utils";
 import { useSiteSettings } from "../context/SiteSettingsContext";
+import { productMatches } from "../lib/search-utils";
 
 // ─────────────────────────────────────────────
 // Paleta de marca — Tienda Virtual
@@ -205,25 +205,14 @@ return (
               href={user ? "/admin" : "/"}
               className="hidden lg:flex items-center leading-none"
             >
-              {settings.logoUrl ? (
-                <Image
-                  src={settings.logoUrl}
-                  alt={settings.businessName}
-                  width={190}
-                  height={60}
-                  priority
-                  style={{ height:"65px", width: "auto"}}
-                />
-              ) : (
-                <Image
-                  src="/logo_d4.png"
-                  alt={settings.businessName}
-                  width={190}
-                  height={60}
-                  priority
-                  style={{ height:"65px", width: "auto"}}
-                />
-              )}
+              <Image
+                src={settings.logoUrl || "/logo_mu.png"}
+                alt="logo"
+                width={190}
+                height={60}
+                priority
+                style={{ height:"65px", width: "auto"}}
+              />
             </a>
           </div>
 
@@ -233,25 +222,14 @@ return (
               href={user ? "/admin" : "/"}
               className="pointer-events-auto flex flex-col items-center leading-none"
             >
-              {settings.logoUrl ? (
-                <Image
-                  src={settings.logoUrl}
-                  alt={settings.businessName}
-                  width={180}
-                  height={62}
-                  priority
-                  style={{ height: "65px",width: "auto"}}
-                />
-              ) : (
-                <Image
-                  src="/logo_d4.png"
-                  alt={settings.businessName}
-                  width={180}
-                  height={62}
-                  priority
-                  style={{ height: "65px",width: "auto"}}
-                />
-              )}
+              <Image
+                src={settings.logoUrl || "/logo_mu.png"}
+                alt="Logo"
+                width={180}
+                height={62}
+                priority
+                style={{ height: "65px",width: "auto"}}
+              />
             </a>
           </div>
 
@@ -451,12 +429,6 @@ return (
               className="flex items-center justify-between px-5 py-4 border-b"
               style={{ borderColor: BRAND.border }}
             >
-              <span
-                className="font-bold text-base"
-                style={{ color: "#ffffff", letterSpacing: "0.08em" }}
-              >
-              {settings.businessName}
-              </span>
               <button
                 onClick={() => setMobileOpen(false)}
                 className="p-1.5 rounded-xl transition-colors hover:bg-white/10"

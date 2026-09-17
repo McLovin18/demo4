@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { usePathname } from "next/navigation";
-import { useTracking } from "../lib/useAnalytics";
+import { useSiteSettings } from "../context/SiteSettingsContext";
 import WhatsAppFloatingButton from "./WhatsAppFloatingButton";
 import styles from "./Footer.module.css";
-import { getPublicTodayAnalytics, PublicTodayAnalytics } from "../lib/analytics-db";
-import { useSiteSettings } from "../context/SiteSettingsContext";
 
 const IconInstagram = () => (
   <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
@@ -40,46 +38,20 @@ const IconFacebook = () => (
 
 const Footer: React.FC = () => {
   const pathname = usePathname();
-  const { trackLinkClick } = useTracking();
   const { settings } = useSiteSettings();
-  const [analytics, setAnalytics] = useState<PublicTodayAnalytics | null>(null);
-  const [instagramFollowers, setInstagramFollowers] = useState<number | null>(null);
-  const [instagramEnabled, setInstagramEnabled] = useState(false);
+
+  // Generar socialLinks dinámicamente basado en configuración
+  const socialLinks = [
+    ...(settings.instagramUrl ? [{ href: settings.instagramUrl, label: "Instagram", Icon: IconInstagram }] : []),
+    ...(settings.tiktokUrl ? [{ href: settings.tiktokUrl, label: "TikTok", Icon: IconTikTok }] : []),
+    ...(settings.facebookUrl ? [{ href: settings.facebookUrl, label: "Facebook", Icon: IconFacebook }] : []),
+  ];
 
   const showWhatsAppFloating = pathname && !pathname.startsWith("/admin");
 
-  // Crear enlaces sociales dinámicamente
-  const socialLinks = [
-    ...(settings.socialLinks?.instagram ? [{ href: settings.socialLinks.instagram, label: "Instagram", Icon: IconInstagram }] : []),
-    ...(settings.socialLinks?.tiktok ? [{ href: settings.socialLinks.tiktok, label: "TikTok", Icon: IconTikTok }] : []),
-    ...(settings.socialLinks?.facebook ? [{ href: settings.socialLinks.facebook, label: "Facebook", Icon: IconFacebook }] : []),
-  ];
-
-  useEffect(() => {
-    getPublicTodayAnalytics().then(setAnalytics).catch(() => setAnalytics(null));
-
-    // Cargar seguidores de Instagram solo si está configurado
-    fetch("/api/instagram/followers")
-      .then(res => res.json())
-      .then(data => {
-        // Solo mostrar si hay seguidores reales y no es placeholder
-        if (data.followersCount > 0 && data.lastUpdated) {
-          setInstagramFollowers(data.followersCount);
-          setInstagramEnabled(true);
-        } else {
-          setInstagramFollowers(null);
-          setInstagramEnabled(false);
-        }
-      })
-      .catch(() => {
-        setInstagramFollowers(null);
-        setInstagramEnabled(false);
-      });
-  }, []);
-
   return (
     <>
-      <footer className=" border-t border-white/10 bg-black text-white">
+      <footer className=" border-t border-white/10 text-white">
         <div className={styles.ftGlowLeft} />
 
         <div className={styles.ftGlowLeft} />
@@ -95,19 +67,8 @@ const Footer: React.FC = () => {
                 {settings.businessName}
               </span>
 
-              {instagramEnabled && instagramFollowers !== null && instagramFollowers > 0 && (
-                <div className="flex items-center gap-1.5 mt-1">
-                  <IconInstagram />
-                  <span className="text-xs text-white/60">
-                    {instagramFollowers.toLocaleString()} seguidores
-                  </span>
-                </div>
-              )}
-
               <div className="text-xs text-white/60 mt-1 max-w-[220px]">
-                {settings.businessDescription?.map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))}
+                <p>{settings.businessDescription}</p>
                 <p className="flex items-center gap-1 justify-center md:justify-start mt-0.5">
                   <IconLocation />
                   {settings.businessAddress}
@@ -117,54 +78,35 @@ const Footer: React.FC = () => {
 
             {/* Columna 2: Redes sociales */}
             <div className="w-full flex justify-center">
-              <div className="w-full max-w-md flex items-center justify-between gap-3">
-                <div className="text-xs text-white/60 font-semibold">
-                  Visitantes:{" "}
-                  <span className="text-white">
-                    {analytics ? analytics.visitors : "-"}
-                  </span>
-                </div>
-
+              <div className="w-full max-w-md flex items-center justify-center gap-3">
                 <ul className={styles.ftSocials}>
                   {socialLinks.map(({ href, label, Icon }) => (
                     <li key={label}>
                       <a
                         href={href}
-                        className="flex items-center justify-center w-9 h-9 rounded-full border border-white/15 text-white transition-colors hover:bg-[#FF3D8A] hover:border-[#FF3D8A] hover:text-black"
+                        className="flex items-center justify-center w-9 h-9 rounded-full border border-white/15 text-white transition-colors hover:bg-[#8B5CF6] hover:border-[#8B5CF6]"
                         target="_blank"
                         rel="noreferrer"
                         title={label}
-                        onClick={() => trackLinkClick().catch(console.error)}
                       >
                         <Icon />
                       </a>
                     </li>
                   ))}
                 </ul>
-
-                <div className="text-xs text-white/60 font-semibold text-right">
-                  Compras:{" "}
-                  <span className="text-white">
-                    {analytics ? analytics.purchases : "-"}
-                  </span>
-                </div>
               </div>
             </div>
             {/* Columna 3: Contacto */}
             <div className="flex flex-col items-center md:items-end gap-2.5">
-              {settings.whatsappDisplay && (
-                <a
-                  href={`https://wa.me/${settings.whatsappNumber}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2 text-xl text-white/70 hover:text-[#FF3D8A] transition-colors"
-                  onClick={() => trackLinkClick().catch(console.error)}
-                >
-                  <span>{settings.whatsappDisplay}</span>
-                  <IconWhatsApp />
-                </a>
-              )}
-
+              <a
+                href={`https://wa.me/${settings.whatsappNumber}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 text-xl text-white/70 hover:text-[#8B5CF6] transition-colors"
+              >
+                <span>{settings.whatsappDisplay}</span>
+                <IconWhatsApp />
+              </a>
             </div>
 
           </div>
@@ -180,7 +122,7 @@ const Footer: React.FC = () => {
           </p>
           <div className={styles.ftCopyRight}>
             <div className="flex items-center gap-1.5 text-xs text-white/60">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#FF3D8A]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
               Hecho en Ecuador
             </div>
 
@@ -188,8 +130,7 @@ const Footer: React.FC = () => {
               href="https://www.instagram.com/hector.cobena/"
               target="_blank"
               rel="noreferrer"
-              className="text-xs text-white/50 hover:text-[#FF3D8A] transition-colors"
-              onClick={() => trackLinkClick().catch(console.error)}
+              className="text-xs text-white/50 hover:text-[#8B5CF6] transition-colors"
             >
               Desarrollado por Héctor Cobeña
             </a>

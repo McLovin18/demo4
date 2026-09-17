@@ -115,7 +115,7 @@ const WhatsAppFloatingButton: React.FC = () => {
         href={`https://wa.me/${settings.whatsappNumber}`}
         target="_blank"
         rel="noreferrer"
-        aria-label={`WhatsApp ${settings.businessName}`}
+        aria-label="WhatsApp Marca Estilo"
         className="wa-float"
       >
         <div className="wa-wrap">
@@ -135,6 +135,7 @@ const WhatsAppFloatingButton: React.FC = () => {
     </>
   );
 };
+
 
 
 
