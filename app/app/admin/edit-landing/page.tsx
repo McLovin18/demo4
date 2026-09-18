@@ -23,6 +23,7 @@ import { sectionSchemas } from "../../landing/sectionSchemas";
 import { SectionRenderer } from "../../landing/sectionRegistry";
 
 import { obtenerProductos } from "../../lib/productos-db";
+import { obtenerCategorias } from "../../lib/categorias-db";
 import ProductoCard from "../../components/ProductoCard";
 import DraggablePreviewEditor from "../components/DraggablePreviewEditor";
 
@@ -89,6 +90,7 @@ export default function LandingEditor() {
   const [addAfterIndex, setAddAfterIndex] = useState<number | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
   const [allProductos, setAllProductos] = useState<any[]>([]);
+  const [categorias, setCategorias] = useState<any[]>([]);
   const [activeTabs, setActiveTabs] = useState<
     Record<string, "content" | "styles" | "advanced" | "positioning">
   >({});
@@ -261,9 +263,10 @@ export default function LandingEditor() {
     async function fetchData() {
       setLoading(true);
       try {
-        const [landingData, prods] = await Promise.all([
+        const [landingData, prods, cats] = await Promise.all([
           getLandingDraft(),
           obtenerProductos(),
+          obtenerCategorias(),
         ]);
 
         setHero(landingData?.hero ?? null);
@@ -280,6 +283,7 @@ export default function LandingEditor() {
           .slice(0, 10);
 
         setFeaturedProducts(recentProducts);
+        setCategorias(cats ?? []);
 
         // Migramos secciones antiguas (no JSON) al nuevo formato en memoria
         const rawSections: any[] = landingData?.sections ?? [];
@@ -3337,6 +3341,15 @@ export default function LandingEditor() {
                     .map((section) => {
                       // Build preview section; aplanar fieldStyles responsive
                       let previewSection = { ...section } as any;
+                      
+                      // Función auxiliar para encontrar el nombre de la categoría por ID
+                      const findCategoryName = (catId: string): string => {
+                        const category = categorias.find((cat: any) => 
+                          String(cat.id).trim().toLowerCase() === String(catId).trim().toLowerCase()
+                        );
+                        return category?.nombre || catId;
+                      };
+                      
                       const featuredCategoryItemsFromProducts = featuredProducts
                         .map((product: any) => {
                           const catId = String(product?.categoria || "").trim();
@@ -3344,7 +3357,7 @@ export default function LandingEditor() {
 
                           return {
                             id: catId,
-                            title: catId,
+                            title: findCategoryName(catId),
                             image: product?.imagenes?.[0] || product?.imagen || null,
                             link: `/products-by-category?cat=${encodeURIComponent(catId)}`,
                           };
@@ -3479,10 +3492,45 @@ export default function LandingEditor() {
                       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
                       .map((section) => {
                         let previewSection = { ...section } as any;
+                        
+                        // Función auxiliar para encontrar el nombre de la categoría por ID
+                        const findCategoryName = (catId: string): string => {
+                          const category = categorias.find((cat: any) => 
+                            String(cat.id).trim().toLowerCase() === String(catId).trim().toLowerCase()
+                          );
+                          return category?.nombre || catId;
+                        };
+                        
                         if (section.type === "featuredProducts") {
                           previewSection.props = { ...(section.props || {}), products: featuredProducts, device: previewDevice };
                         } else if (section.type === "featuredCategories") {
-                          previewSection.props = { ...(section.props || {}), device: previewDevice };
+                          const currentItems = Array.isArray((section.props as any)?.items)
+                            ? (section.props as any).items
+                            : [];
+                          
+                          const featuredCategoryItemsFromProducts = featuredProducts
+                            .map((product: any) => {
+                              const catId = String(product?.categoria || "").trim();
+                              if (!catId) return null;
+
+                              return {
+                                id: catId,
+                                title: findCategoryName(catId),
+                                image: product?.imagenes?.[0] || product?.imagen || null,
+                                link: `/products-by-category?cat=${encodeURIComponent(catId)}`,
+                              };
+                            })
+                            .filter(Boolean)
+                            .filter(
+                              (item: any, index: number, arr: any[]) =>
+                                arr.findIndex((x: any) => x.id === item.id) === index
+                            );
+                          
+                          previewSection.props = {
+                            ...(section.props || {}),
+                            items: currentItems.length > 0 ? currentItems : featuredCategoryItemsFromProducts,
+                            device: previewDevice,
+                          };
                         } else if (section.type === "hero") {
                             const normalized = buildHeroPreviewProps(section, previewDevice);
                             previewSection.props = normalized.props;
